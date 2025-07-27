@@ -195,7 +195,16 @@ import { h } from 'vue';
                             checked-children="ເປີດ" 
                             un-checked-children="ປິດ" 
                         />
-                        <a-divider type="vertical" />
+                        <!-- <a-divider type="vertical" />
+                        <a-popconfirm
+                            v-if="data.courses.length"
+                            title="ທ່ານເເນ່ໃຈທີ່ຈະລຶບ ຫຼື ບໍ?"
+                            ok-text="ຕົກລົງ"
+                            cancel-text="ຍົກເລີກ"
+                            @confirm="onDelete(record.id)"
+                        >
+                            <a style="color: red;">Delete</a>
+                        </a-popconfirm> -->
                     </span>
                 </template>
             </template>                    
