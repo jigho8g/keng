@@ -19,6 +19,7 @@ const formState = reactive<FormState>({
 });
 
 const isLoading = ref(false);
+const error = ref<string | null>(null);
 
 const onFinish = async (values: any) => {
   try {
@@ -36,8 +37,7 @@ const onFinish = async (values: any) => {
         duration: 8,
       });
       isLoading.value = false;
-  } catch (err: any) {
-    console.error('Registration error:', err);
+    error.value = 'ມີຂໍ້ຜິດພາດໃນການລົງທະບຽນ. ກະລຸນາລອງໃໝ່.';
   } finally {
     isLoading.value = false;
   }

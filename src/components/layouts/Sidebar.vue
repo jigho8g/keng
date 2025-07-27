@@ -1,6 +1,6 @@
 <template>
     <div class="logo">
-        <img src="https://halcenter.la/assets/hal-e-commerce.bc6f2561.jpg" />
+        <img src="https://thumbs.dreamstime.com/z/apply-online-eyeball-blue-round-button-isolated-129698748.jpg" />
     </div>
       <a-menu v-model:selectedKeys="selectedKeys" class="sidebar-menu" mode="inline">
         <a-menu-item key="1" @click="handleMenuClick('customer')">

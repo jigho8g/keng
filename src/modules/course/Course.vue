@@ -4,7 +4,7 @@ import { useCourse } from './composible/index';
 import type { ICourseEntity } from './entity/course.entity';
 import { h } from 'vue';
 
-    const { fetchItems, getAllTeachers, getallCategoires, createCourse } = useCourse();
+    const { fetchItems, getAllTeachers, getallCategoires, createCourse, updateStatusChange } = useCourse();
 
     const data = reactive<any>({
         courses: [],
@@ -46,7 +46,8 @@ import { h } from 'vue';
             key: "duration_hours",
             customRender: ({ record }: { record: ICourseEntity }) => {
                 const durationHours = record.duration_hours ?? 0;
-                return `${durationHours} ຊົ່ວໂມງ`;
+                return durationHours + ' ຊົ່ວໂມງ';
+                // return `${durationHours} ຊົ່ວໂມງ`;
             }
         },
         {
@@ -98,7 +99,11 @@ import { h } from 'vue';
                     text
                 );
             }
-        }
+        },
+        {
+            title: 'Action',
+            key: 'action',
+        },
     ]
 
     /**
@@ -152,7 +157,23 @@ import { h } from 'vue';
     });
 
     const handleSubmit = async () => {
-        await createCourse(formState);
+        try {
+            await createCourse(formState);
+            isOpenModalAdd.value = false;
+            await fetchAll();
+        } catch (error) {
+            console.error('Error creating course:', error);
+        }
+    }
+
+    const handleStatusChange = async (record: ICourseEntity, checked: boolean) => {
+        const newStatus = checked ? 'open' : 'closed';
+        try {
+            await updateStatusChange(record.id, newStatus);
+            await fetchAll();
+        } catch (error) {
+            console.error('Error updating course status:', error);
+        }
     }
 </script>
 
@@ -164,7 +185,21 @@ import { h } from 'vue';
                 <a-button type="primary" @click="openModalAdd">ເພີ່ມຂໍ້ມູນ</a-button>
             </p>
         </div>
-        <a-table :data-source="data.courses" :columns="columns"></a-table>
+        <a-table :data-source="data.courses" :columns="columns">
+            <template #bodyCell="{ column, record }">
+                <template v-if="column.key === 'action'">
+                    <span>
+                        <a-switch 
+                            :checked="record.status === 'open'" 
+                            @change="(checked: boolean) => handleStatusChange(record, checked)"
+                            checked-children="ເປີດ" 
+                            un-checked-children="ປິດ" 
+                        />
+                        <a-divider type="vertical" />
+                    </span>
+                </template>
+            </template>                    
+        </a-table>
     </div>
      <a-modal v-model:open="isOpenModalAdd" title="ສ້າງ Course" @ok="handleSubmit">
         <!-- Teachers -->

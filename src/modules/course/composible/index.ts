@@ -52,10 +52,25 @@ export function useCourse() {
     }
   };
 
+  const updateStatusChange = async (id: number, status: string) => {
+    try {
+      const response = await apiClient.put(`course/update-status/${id}`, {
+        status: status,
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error("Error updating course status:", error);
+      throw new Error(
+        "An unexpected error occurred while updating course status"
+      );
+    }
+  };
+
   return {
     fetchItems,
     getAllTeachers,
     getallCategoires,
     createCourse,
+    updateStatusChange,
   };
 }
